@@ -114,7 +114,7 @@ function PlayerSelection() {
           onClick={handleRandomSelection}
           className="mt-4 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
         >
-          Select Aleatory Player
+          Select random player
         </button>
 
         {selectedPlayer && (
