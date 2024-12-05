@@ -6,21 +6,21 @@ function PlayerSelection() {
   const [error, setError] = useState("");
   const [selectedPlayer, setSelectedPlayer] = useState("");
   const [isAlertActive, setIsAlertActive] = useState(false); // État pour activer/désactiver l'alerte
-  const [bgColor, setBgColor] = useState("bg-white");
+  const [bgColor, setBgColor] = useState("bg-transparent");
 
   const handleAddPlayer = () => {
     if (!currentPlayer.trim()) {
-      setError("Le pseudo ne peut pas être vide.");
+      setError("Player's name cannot be empty.");
       return;
     }
 
     if (players.includes(currentPlayer.trim())) {
-      setError("Ce pseudo existe déjà.");
+      setError("This name already exists.");
       return;
     }
 
     if (players.length >= 6) {
-      setError("Vous ne pouvez pas ajouter plus de 6 joueurs.");
+      setError("You can't add more than 6 players.");
       return;
     }
 
@@ -31,7 +31,7 @@ function PlayerSelection() {
 
   const handleRandomSelection = () => {
     if (players.length === 0) {
-      setError("Ajoutez des joueurs avant de sélectionner.");
+      setError("Add players before selecting one.");
       return;
     }
 
@@ -40,24 +40,24 @@ function PlayerSelection() {
     setError("");
   };
 
-  // Gestion de l'effet d'alerte
+  // Gestion de l'effet d'alerte (couleur et musique)
   useEffect(() => {
     let interval;
     let audio;
 
     if (isAlertActive) {
-      // Commence à changer la couleur
+      // Commence à changer la couleur entre transparent et rouge
       interval = setInterval(() => {
-        setBgColor((prevColor) => (prevColor === "bg-white" ? "bg-red-500" : "bg-white"));
+        setBgColor((prevColor) => (prevColor === "bg-transparent" ? "bg-red-500" : "bg-transparent"));
       }, 500);
 
       // Joue la musique d'alerte
       audio = new Audio("/music.mp3");
       audio.loop = true;
-      audio.play();
+      audio.play().catch((err) => console.error("Audio playback error:", err));
     } else {
-      // Arrête la transition de couleur
-      setBgColor("bg-white");
+      // Réinitialise la couleur à transparent
+      setBgColor("bg-transparent");
 
       // Arrête la musique
       if (audio) {
@@ -78,32 +78,33 @@ function PlayerSelection() {
   }, [isAlertActive]);
 
   return (
-    <div className={`flex flex-col items-center ${bgColor} min-h-screen p-6 transition-colors duration-500`}>
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">Gestion des Joueurs</h1>
-      
-      <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+    <div className={`flex flex-col items-center min-h-screen p-4 sm:p-6 lg:p-12 transition-colors duration-500 ${bgColor}`}>
+      <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-red-500 mb-6">
+        Players Management
+      </h2>
+
+      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg bg-white shadow-lg rounded-lg p-4 sm:p-6">
         <div className="flex flex-col gap-2">
           <input
             type="text"
-            placeholder="Pseudo du joueur"
+            placeholder="Player's name"
             value={currentPlayer}
             onChange={(e) => setCurrentPlayer(e.target.value)}
-            className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
           />
-          
           <button
             onClick={handleAddPlayer}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
           >
-            Ajouter
+            Add
           </button>
         </div>
 
-        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {error && <p className="text-red-500 mt-2 text-sm sm:text-base">{error}</p>}
 
         <ul className="mt-4">
           {players.map((player, index) => (
-            <li key={index} className="p-2 bg-gray-100 rounded-lg my-1">
+            <li key={index} className="p-2 bg-gray-100 rounded-lg my-1 text-sm sm:text-base">
               {player}
             </li>
           ))}
@@ -113,23 +114,23 @@ function PlayerSelection() {
           onClick={handleRandomSelection}
           className="mt-4 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
         >
-          Sélectionner un joueur aléatoire
+          Select Aleatory Player
         </button>
 
         {selectedPlayer && (
-          <p className="mt-4 text-xl font-bold text-green-600">
-            🎉 {selectedPlayer} commence à jouer !
+          <p className="mt-4 text-lg sm:text-xl font-bold text-green-600">
+            🎉 {selectedPlayer} Begins to play!
           </p>
         )}
       </div>
 
       <button
         onClick={() => setIsAlertActive(!isAlertActive)}
-        className={`mt-6 px-4 py-2 rounded-lg text-white ${
+        className={`mt-6 px-4 py-2 rounded-lg text-white text-sm sm:text-base ${
           isAlertActive ? "bg-red-600 hover:bg-red-700" : "bg-gray-500 hover:bg-gray-600"
         }`}
       >
-        {isAlertActive ? "Désactiver l'alerte" : "Activer l'alerte"}
+        {isAlertActive ? "Deactivate Alert" : "Activate Alert"}
       </button>
     </div>
   );

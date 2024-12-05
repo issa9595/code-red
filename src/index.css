@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Cyberjunkies';
+  src: url('./assets/fonts/Cyberjunkies.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+h2 {
+  font-family: 'Cyberjunkies', sans-serif;
+}
+
+body {
+    background-image: url('../public/images/RCBG.png');
+    background-size: cover; /* Adapte l'image pour couvrir toute la page */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    background-position: center; /* Centre l'image */
+    height: 100%; /* Permet un ajustement fluide */
+    margin: 0; /* Supprime les marges */
+    position: relative; /* Permet de positionner des éléments */
+  }
+  
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5); /* Superposition blanche avec opacité */
+    z-index: -1; /* Place en arrière-plan derrière les autres éléments */
+  }
+  
